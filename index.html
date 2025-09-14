@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Celebration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .balloon {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confetti-fall 5s linear infinite;
+        }
+        
+        .cake-image:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .candle-flame {
+            animation: flicker 0.5s infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+    </style>
+</head>
+<body class="bg-pink-50 min-h-screen flex flex-col items-center justify-center overflow-hidden relative">
+    <!-- Confetti elements -->
+    <div id="confetti-container"></div>
+    
+    <!-- Balloons -->
+    <div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <div class="balloon w-16 h-20 bg-red-500 rounded-full absolute top-20 left-10" style="clip-path: ellipse(38% 42% at 50% 50%);"></div>
+        <div class="balloon w-14 h-18 bg-blue-500 rounded-full absolute top-40 right-20" style="clip-path: ellipse(38% 42% at 50% 50%); animation-delay: 0.5s;"></div>
+        <div class="balloon w-12 h-16 bg-yellow-400 rounded-full absolute top-10 right-40" style="clip-path: ellipse(38% 42% at 50% 50%); animation-delay: 0.8s;"></div>
+        <div class="balloon w-18 h-22 bg-purple-500 rounded-full absolute top-60 left-30" style="clip-path: ellipse(38% 42% at 50% 50%); animation-delay: 0.3s;"></div>
+    </div>
+    
+    <div class="z-10 text-center px-4 py-8 bg-white bg-opacity-90 rounded-xl shadow-2xl max-w-md w-full mx-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-pink-600 mb-6 animate-bounce">🎉 Birthday to you happy Jaya! 🎉</h1>
+        
+        <div class="mb-8 relative">
+            <img 
+                src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/08b416f3-39e0-41ca-bb88-83d828aced21.png" 
+                alt="Delicious three-tiered birthday cake with chocolate and vanilla layers, pink frosting, rainbow sprinkles, and lit candles" 
+                class="cake-image rounded-lg shadow-lg w-full h-auto border-4 border-yellow-200 transform transition-all duration-300"
+            />
+            
+            <!-- Candles -->
+            <div class="absolute top-[-20px] left-[35%] flex gap-4">
+                <div class="relative">
+                    <div class="w-2 h-16 bg-yellow-300 rounded-full mx-auto"></div>
+                    <div class="candle-flame w-4 h-6 bg-orange-400 rounded-full mx-auto mt-[-5px]"></div>
+                </div>
+                <div class="relative">
+                    <div class="w-2 h-16 bg-pink-500 rounded-full mx-auto"></div>
+                    <div class="candle-flame w-4 h-6 bg-orange-400 rounded-full mx-auto mt-[-5px]"></div>
+                </div>
+            </div>
+        </div>
+        
+        <p class="text-xl text-gray-700 mb-6">Wishing you a day filled with joy and happiness!</p>
+        
+        <button 
+            id="celebrate-btn"
+            class="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg transform hover:scale-105"
+        >
+            Click to Celebrate!
+        </button>
+        
+        <div id="message-container" class="mt-6 hidden">
+            <p class="text-2xl text-pink-600 font-bold animate-pulse">HAPPY BIRTHDAY!!</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const celebrateBtn = document.getElementById('celebrate-btn');
+            const messageContainer = document.getElementById('message-container');
+            const confettiContainer = document.getElementById('confetti-container');
+            
+            celebrateBtn.addEventListener('click', function() {
+                // Show message
+                messageContainer.classList.remove('hidden');
+                
+                // Create more confetti
+                createConfetti();
+                
+                // Make balloons more active
+                document.querySelectorAll('.balloon').forEach(balloon => {
+                    balloon.style.animation = 'float 1.5s ease-in-out infinite';
+                });
+                
+                // Cake animation
+                const cake = document.querySelector('.cake-image');
+                cake.style.transform = 'scale(1.1) rotate(-5deg)';
+                setTimeout(() => {
+                    cake.style.transform = 'scale(1.1) rotate(5deg)';
+                }, 300);
+                setTimeout(() => {
+                    cake.style.transform = 'scale(1) rotate(0deg)';
+                }, 600);
+                
+                // Change button text
+                celebrateBtn.textContent = 'Celebrating! 🎂';
+                
+                // Play sound (commented out but can be uncommented with actual sound file)
+                // const audio = new Audio('birthday.mp3');
+                // audio.play();
+            });
+            
+            function createConfetti() {
+                const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+                
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 5 + 's';
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    
+                    confettiContainer.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
+            }
+            
+            // Initial confetti
+            for (let i = 0; i < 20; i++) {
+                createConfetti();
+            }
+        });
+    </script>
+</body>
+</html>
